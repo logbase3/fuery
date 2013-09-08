@@ -20,11 +20,47 @@
 */
 
 package main
+import (
+	"code.google.com/p/go-gnureadline"
+	"fmt"
+	"os"
+)
 
-import "fmt"
-
-var delimiter byte = '|'
+const HISTORY_FILE string = "my.history" // TODO: Change the config files to user home
 
 func main() {
-	fmt.Printf("%b\n", delimiter)
+	header := "    fuery (File Query) Copyright (C) 2013  log₃()\n" +
+	"    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.\n" +
+	"    This is free software, and you are welcome to redistribute it\n" +
+	"    under certain conditions; type `show c' for details.\n" +
+	"\n    For more information visit https://github.com/logbase3/fuery\n"
+
+	fmt.Printf("%s\n", header)
+
+	var err error
+
+	term := os.ExpandEnv("TERM")
+	gnureadline.ReadHistory(HISTORY_FILE)
+	gnureadline.StifleHistory(100)  // Maximum 10 history entries
+	gnureadline.ReadInitFile(".inputrc")  // Read in a keybinding initialization file
+	line := ""
+
+	for i:=1; err == nil && line != "quit"; i++ {
+			line, err = gnureadline.Readline(fmt.Sprintf("fuery> "), true)
+			switch line {
+				case "vi":
+						gnureadline.Rl_editing_mode_set(gnureadline.Vi)
+				case "emacs":
+						gnureadline.Rl_editing_mode_set(gnureadline.Emacs)
+				case "insert":
+						gnureadline.Rl_insert_mode_set(true)
+				case "overwrite":
+						gnureadline.Rl_insert_mode_set(false)
+				}
+				fmt.Printf("You typed: %s\n", line)
+	}
+	fmt.Printf("History length %d\n",  gnureadline.HistoryLength())
+	fmt.Printf("History max entries %d\n",  gnureadline.HistoryMaxEntries())
+	gnureadline.WriteHistory(HISTORY_FILE)
+	gnureadline.Rl_reset_terminal(term)
 }
