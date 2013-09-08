@@ -21,10 +21,14 @@
 
 package main
 
-import "fmt"
+func ExecuteSelect(query Select) {
+	// Create data set from query.file with the rows matching query.conditions
 
-var delimiter byte = '|'
+	// Group by fields and compute aggregate functions
 
-func main() {
-	fmt.Printf("%b\n", delimiter)
+	// Filter data set by query.having conditions
+
+	// Order rows
+
+	// Return only the requested fields
 }
