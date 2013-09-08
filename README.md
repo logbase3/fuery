@@ -1,4 +1,4 @@
-fuery
+Fuery
 =====
 
-File Query
+Fuery (File Query) Is a small and simple tool for querying files using SQL.
