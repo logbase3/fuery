@@ -19,7 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-package main
+package filequery
 
 // This file includes all the diferent structures needed to represent a query:
 // Select, Update, etc.. and the necesary types needed for representing each of

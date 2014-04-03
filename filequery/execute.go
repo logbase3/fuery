@@ -19,7 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-package main
+package filequery
 
 func ExecuteSelect(query Select) {
 	// Create data set from query.file with the rows matching query.conditions
