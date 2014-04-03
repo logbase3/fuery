@@ -19,6 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
+// This is another godoc test
 package main
 
 import (
@@ -36,6 +37,7 @@ const HEADER string = "    Fuery (File Query) Copyright (C) 2013  log₃()\n" +
 
 var Delimiter byte = '|'
 
+// This is a godoc test
 func main() {
 	fmt.Printf("%s\n", HEADER)
 
