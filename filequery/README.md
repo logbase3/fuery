@@ -1,7 +1,9 @@
 filequery
 =====
 
-Package filequery is a small and simple library for querying files using SQL.
+Package filequery is a small and simple library that allows you to query files
+by using built-in functions or plain standard SQL statements.
+
 
     filequery is a small and simple tool for querying files using SQL.
     Copyright (C) 2013 log₃() <contact@logbase3.com>
