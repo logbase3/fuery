@@ -1,5 +1,5 @@
 /*
-	Fuery (File Query) Is a small and simple tool for querying files using SQL.
+	Fuery, is a small and simple tool for querying files using SQL.
 	Copyright (C) 2013 log₃() <contact@logbase3.com>
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,10 @@
 package main
 
 import (
-	"code.google.com/p/go-gnureadline"
 	"fmt"
 	"os"
+	"code.google.com/p/go-gnureadline"
+	"github.com/logbase3/fuery/filequery"
 )
 
 const HISTORY_FILE string = "my.history" // TODO: Change the config files to user home
