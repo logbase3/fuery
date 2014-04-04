@@ -1,9 +1,9 @@
 Fuery
 =====
 
-Fuery, is a small and simple tool for querying files using SQL.
+Package filequery is a small and simple library for querying files using SQL.
 
-    Fuery, is a small and simple tool for querying files using SQL.
+    filequery is a small and simple tool for querying files using SQL.
     Copyright (C) 2013 log₃() <contact@logbase3.com>
 
     This program is free software: you can redistribute it and/or modify
