@@ -1,4 +1,4 @@
-Fuery
+filequery
 =====
 
 Package filequery is a small and simple library for querying files using SQL.
