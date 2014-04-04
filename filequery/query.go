@@ -52,7 +52,7 @@ type Condition struct {
 type AggFunction uint8
 
 const (
-	AggSum Operator = iota
+	AggSum AggFunction = iota
 	AggAvg
 )
 
