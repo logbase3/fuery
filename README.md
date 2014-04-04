@@ -3,7 +3,7 @@ Fuery
 
 Fuery, is a small and simple tool for querying files using SQL.
 
-Online documentation is available on [GoDoc](http://godoc.org/github.com/logbase3/fuery)
+Online documentation is available on [GoDoc](http://godoc.org/github.com/logbase3/fuery).
 
     Fuery, is a small and simple tool for querying files using SQL.
     Copyright (C) 2013 log₃() <contact@logbase3.com>
