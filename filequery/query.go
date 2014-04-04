@@ -48,7 +48,7 @@ type Condition struct {
 	operand  string
 }
 
-// Declaration of Enum-Like type
+// Enum-Like type AggFunction
 type AggFunction uint8
 
 const (
