@@ -21,5 +21,5 @@ by using built-in functions or plain standard SQL statements.
     You should have received a copy of the GNU Lesser General Public License
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-    For more information visit https://github.com/logbase3/fuery
-    or send an e-mail to contact@logbase3.com
+For more information visit https://github.com/logbase3/fuery or send an e-mail
+to contact@logbase3.com
