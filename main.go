@@ -19,14 +19,12 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-// This is another godoc test
+// Fuery, is a small and simple tool for querying files using SQL.
 package main
 
 import (
 	"fmt"
-	"os"
-	"code.google.com/p/go-gnureadline"
-	"github.com/logbase3/fuery/filequery"
+	"github.com/kless/term/readline"
 )
 
 const HISTORY_FILE string = "my.history" // TODO: Change the config files to user home
@@ -38,35 +36,40 @@ const HEADER string = "    Fuery (File Query) Copyright (C) 2013  log₃()\n" +
 
 var Delimiter byte = '|'
 
-// This is a godoc test
 func main() {
-	fmt.Printf("%s\n", HEADER)
 
-	var err error
+	fmt.Printf("%s%s", HEADER, readline.CRLF)
 
-	term := os.ExpandEnv("TERM")
-	gnureadline.ReadHistory(HISTORY_FILE)
-	gnureadline.StifleHistory(1000)      // Maximum history entries
-	gnureadline.ReadInitFile(".inputrc") // Read in a keybinding initialization file
-	line := ""
+	history,_ := readline.NewHistory(HISTORY_FILE)
+	history.Load()
 
-	for i := 1; err == nil && line != "quit"; i++ {
-		line, err = gnureadline.Readline(fmt.Sprintf("fuery> "), true)
-
-		switch line {
-		case "vi":
-			gnureadline.Rl_editing_mode_set(gnureadline.Vi)
-		case "emacs":
-			gnureadline.Rl_editing_mode_set(gnureadline.Emacs)
-		case "insert":
-			gnureadline.Rl_insert_mode_set(true)
-		case "overwrite":
-			gnureadline.Rl_insert_mode_set(false)
-		case "header":
-			fmt.Printf("%s\n", HEADER)
-		}
-		//fmt.Printf("You typed: %s\n", line)
+	ln, err := readline.NewDefaultLine(history)
+	if err != nil {
+		fmt.Printf("%s", err)
+		return
 	}
-	gnureadline.WriteHistory(HISTORY_FILE)
-	gnureadline.Rl_reset_terminal(term)
+	defer func() {
+		fmt.Printf("%s\n", "Hasta luego")
+		history.Save()
+
+		if err = ln.Restore(); err != nil {
+			fmt.Printf("%s", err)
+		}
+	}()
+
+	for {
+		line, err := ln.Read()
+		if err != nil {
+			if err == readline.ErrCtrlD {
+				err = nil
+			} else {
+				fmt.Printf("%s", err)
+				return
+			}
+			break
+			}
+
+			fmt.Printf("%s%s\n", "Escribiste: ", line)
+
+		}
 }
