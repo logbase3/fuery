@@ -34,23 +34,21 @@ const HEADER string = "    Fuery (File Query) Copyright (C) 2013  log₃()\n" +
 	"    under certain conditions; type `show c' for details.\n" +
 	"\n    For more information visit https://github.com/logbase3/fuery\n"
 
-var Delimiter byte = '|'
-
 func main() {
 
-	fmt.Printf("%s%s", HEADER, readline.CRLF)
+	fmt.Printf("%s\n", HEADER)
 
-	history,_ := readline.NewHistory(HISTORY_FILE)
-	history.Load()
+	hist,_ := readline.NewHistory(HISTORY_FILE)
+	hist.Load()
 
-	ln, err := readline.NewDefaultLine(history)
+	ln, err := readline.NewDefaultLine(hist)
 	if err != nil {
 		fmt.Printf("%s", err)
 		return
 	}
 	defer func() {
 		fmt.Printf("%s\n", "Hasta luego")
-		history.Save()
+		hist.Save()
 
 		if err = ln.Restore(); err != nil {
 			fmt.Printf("%s", err)
@@ -69,7 +67,7 @@ func main() {
 			break
 			}
 
-			fmt.Printf("%s%s\n", "Escribiste: ", line)
+			fmt.Printf("%s%s\n\n", "Escribiste: ", line)
 
 		}
 }
