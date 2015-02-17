@@ -67,7 +67,7 @@ func main() {
 	flag.Parse()
 	FILES_LIST = flag.Args()
 
-	fmt.Printf("%s\n", HEADER)
+	fmt.Printf(HEADER)
 
 	line := liner.NewLiner()
 	defer line.Close()
@@ -83,14 +83,35 @@ func main() {
 	}
 
 	// Prompt loop
+	var input string
+	var err error
 	for {
-		if name, err := line.Prompt(PROMPT); err != nil {
+		if input, err = line.Prompt(PROMPT); err != nil {
 			fmt.Println("\nError reading line: ", err)
 			break
-		} else {
-			fmt.Println("Got:", name)
-			line.AppendHistory(name)
 		}
+
+		input = strings.Trim(input, "\t\r\n ")
+
+		// If empty, ignore line
+		if input == "" {
+			continue
+		}
+
+		if input[0] == '\\' { // If input is a system command
+			switch input {
+			case "\\copyright":
+				fmt.Printf("%s\n\n", LICENSE)
+			case "\\?":
+				fmt.Printf("%s\n\n", SYSTEM_HELP)
+			default:
+				fmt.Println("Got:", input)
+			}
+		} else { // If input is a statement
+
+		}
+
+		line.AppendHistory(input)
 	}
 
 	// Write history to file
@@ -103,11 +124,27 @@ func main() {
 }
 
 func commandCompleter(line string) (c []string) {
-	var names = []string{"john", "james", "mary", "nancy"}
-	for _, n := range names {
+	var systemCommands = []string{"\\copyright", "\\?", "\\h"}
+	var sqlStatements = []string{"select", "SELECT"}
+
+	for _, n := range systemCommands {
+		if strings.HasPrefix(n, strings.ToLower(line)) {
+			c = append(c, n)
+		}
+	}
+
+	for _, n := range sqlStatements {
 		if strings.HasPrefix(n, strings.ToLower(line)) {
 			c = append(c, n)
 		}
 	}
 	return
+}
+
+func printHelp() {
+
+}
+
+func printOptionHelp() {
+
 }
