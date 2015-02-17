@@ -23,51 +23,91 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"github.com/kless/term/readline"
+	"github.com/peterh/liner"
+	"os"
+	"os/user"
+	"path/filepath"
+	"strings"
 )
 
-const HISTORY_FILE string = "my.history" // TODO: Change the config files to user home
-const HEADER string = "    Fuery (File Query) Copyright (C) 2013  log₃()\n" +
-	"    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.\n" +
-	"    This is free software, and you are welcome to redistribute it\n" +
-	"    under certain conditions; type `show c' for details.\n" +
-	"\n    For more information visit https://github.com/logbase3/fuery\n"
+// Global Variables
+var (
+	PROMPT       string = "> "
+	HOME         string
+	HISTORY_FILE string
+	VERBOSE      bool
+	FILES_LIST   []string
+)
+
+// Initialize global variables
+func init() {
+	// Get user's history file
+	usr, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+	HOME = usr.HomeDir
+	HISTORY_FILE = HOME + filepath.FromSlash(HISTORY_FILE_NAME)
+}
+
+// Manage flags
+func init() {
+	const (
+		verbUsage = "When set to true, prints more information."
+	)
+
+	// Debug options
+	flag.BoolVar(&VERBOSE, "verbose", false, verbUsage)
+	flag.BoolVar(&VERBOSE, "v", false, verbUsage+" (shorthand)")
+}
 
 func main() {
+	flag.Parse()
+	FILES_LIST = flag.Args()
 
 	fmt.Printf("%s\n", HEADER)
 
-	hist,_ := readline.NewHistory(HISTORY_FILE)
-	hist.Load()
+	line := liner.NewLiner()
+	defer line.Close()
 
-	ln, err := readline.NewDefaultLine(hist)
-	if err != nil {
-		fmt.Printf("%s", err)
-		return
+	// Set liner options
+	line.SetCompleter(commandCompleter)
+	line.SetCtrlCAborts(false)
+
+	// Load history file
+	if f, err := os.Open(HISTORY_FILE); err == nil {
+		line.ReadHistory(f)
+		f.Close()
 	}
-	defer func() {
-		fmt.Printf("%s\n", "Hasta luego")
-		hist.Save()
 
-		if err = ln.Restore(); err != nil {
-			fmt.Printf("%s", err)
-		}
-	}()
-
+	// Prompt loop
 	for {
-		line, err := ln.Read()
-		if err != nil {
-			if err == readline.ErrCtrlD {
-				err = nil
-			} else {
-				fmt.Printf("%s", err)
-				return
-			}
+		if name, err := line.Prompt(PROMPT); err != nil {
+			fmt.Println("\nError reading line: ", err)
 			break
-			}
-
-			fmt.Printf("%s%s\n\n", "Escribiste: ", line)
-
+		} else {
+			fmt.Println("Got:", name)
+			line.AppendHistory(name)
 		}
+	}
+
+	// Write history to file
+	if f, err := os.Create(HISTORY_FILE); err != nil {
+		fmt.Printf("Error writing history file %s: %s", HISTORY_FILE, err)
+	} else {
+		line.WriteHistory(f)
+		f.Close()
+	}
+}
+
+func commandCompleter(line string) (c []string) {
+	var names = []string{"john", "james", "mary", "nancy"}
+	for _, n := range names {
+		if strings.HasPrefix(n, strings.ToLower(line)) {
+			c = append(c, n)
+		}
+	}
+	return
 }
