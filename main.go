@@ -20,6 +20,9 @@
 */
 
 // Fuery, is a small and simple tool for querying files using SQL.
+// You can embed blocks of code in your godoc, such as this:
+//  fmt.Println("Hello")
+// To do that, simply add an extra indent to your comment's text.
 package main
 
 import (
@@ -90,7 +93,6 @@ func main() {
 			fmt.Println("\nError reading line: ", err)
 			break
 		}
-
 		input = strings.Trim(input, "\t\r\n ")
 
 		// If empty, ignore line
@@ -99,11 +101,19 @@ func main() {
 		}
 
 		if input[0] == '\\' { // If input is a system command
-			switch input {
+			switch strings.Split(input, " ")[0] {
 			case "\\copyright":
 				fmt.Printf("%s\n\n", LICENSE)
 			case "\\?":
 				fmt.Printf("%s\n\n", SYSTEM_HELP)
+			case "\\q":
+				// Bug(Roberto Lapuente): This does not saves history on it's way out
+				os.Exit(0)
+			case "\\copy":
+			case "\\echo":
+			case "\\i":
+			case "\\o":
+			case "\\timing":
 			default:
 				fmt.Println("Got:", input)
 			}
@@ -139,12 +149,4 @@ func commandCompleter(line string) (c []string) {
 		}
 	}
 	return
-}
-
-func printHelp() {
-
-}
-
-func printOptionHelp() {
-
 }
