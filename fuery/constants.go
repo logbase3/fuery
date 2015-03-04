@@ -15,7 +15,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-	For more information visit https://github.com/logbase3/fuery/command
+	For more information visit https://github.com/logbase3/fuery/fuery
 	or send an e-mail to contact@logbase3.com
 */
 
