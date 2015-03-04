@@ -1,5 +1,5 @@
 /*
-	filequery is a small and simple tool for querying files using SQL.
+	fuery is a small and simple tool for querying files using SQL.
 	Copyright (C) 2013 log₃() <contact@logbase3.com>
 
 	This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-package filequery
+package fuery
 
 // This file includes all the diferent structures needed to represent a query:
 // Select, Update, etc.. and the necesary types needed for representing each of
@@ -43,7 +43,7 @@ const (
 )
 
 type Condition struct {
-	field	int
+	field    int
 	operator Operator
 	operand  string
 }
@@ -57,11 +57,11 @@ const (
 )
 
 type Select struct {
-	fields		   []int
-	file			 string
-	conditions	   []Condition
-	aggFunctions	 []AggFunction
-	groupFields	  []int
+	fields           []int
+	file             string
+	conditions       []Condition
+	aggFunctions     []AggFunction
+	groupFields      []int
 	havingConditions []Condition
-	orderFields	  []int
+	orderFields      []int
 }

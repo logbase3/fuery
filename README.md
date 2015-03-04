@@ -1,19 +1,19 @@
-filequery
+fuery
 =====
 
-Package filequery is a small and simple library that allows you to query files
+Package fuery is a small and simple library that allows you to query files
 by using built-in functions or plain standard SQL statements.
 
-Online documentation is available on [GoDoc](http://godoc.org/github.com/logbase3/fuery/filequery).
+Online documentation is available on [GoDoc](http://godoc.org/github.com/logbase3/fuery).
 
 
-    filequery is a small and simple tool for querying files using SQL.
+    fuery is a small and simple tool for querying files using SQL.
     Copyright (C) 2013 log₃() <contact@logbase3.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of

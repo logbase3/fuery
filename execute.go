@@ -1,5 +1,5 @@
 /*
-	filequery is a small and simple tool for querying files using SQL.
+	fuery is a small and simple tool for querying files using SQL.
 	Copyright (C) 2013 log₃() <contact@logbase3.com>
 
 	This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-package filequery
+package fuery
 
 func ExecuteSelect(query Select) {
 	// Create data set from query.file with the rows matching query.conditions
