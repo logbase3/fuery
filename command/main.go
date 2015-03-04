@@ -15,7 +15,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-	For more information visit https://github.com/logbase3/fuery
+	For more information visit https://github.com/logbase3/fuery/command
 	or send an e-mail to contact@logbase3.com
 */
 
@@ -77,7 +77,9 @@ func main() {
 
 	// Set liner options
 	line.SetCompleter(commandCompleter)
+	line.SetWordCompleter(lineCompleter)
 	line.SetCtrlCAborts(false)
+	line.SetTabCompletionStyle(liner.TabPrints)
 
 	// Load history file
 	if f, err := os.Open(HISTORY_FILE); err == nil {
@@ -106,9 +108,13 @@ func main() {
 				fmt.Printf("%s\n\n", LICENSE)
 			case "\\?":
 				fmt.Printf("%s\n\n", SYSTEM_HELP)
+			case "\\h":
+				fmt.Printf("%s\n\n", "SQL STATEMENTS HELP")
 			case "\\q":
 				// Bug(Roberto Lapuente): This does not saves history on it's way out
 				os.Exit(0)
+			case "\\watch":
+				fmt.Printf("%s\n\n", "WATCHING")
 			case "\\copy":
 			case "\\echo":
 			case "\\i":
@@ -135,7 +141,7 @@ func main() {
 
 func commandCompleter(line string) (c []string) {
 	var systemCommands = []string{"\\copyright", "\\?", "\\h"}
-	var sqlStatements = []string{"select", "SELECT"}
+	var sqlStatements = []string{"select", "SELECT", "ATUN", "CREMAdeELOTE"}
 
 	for _, n := range systemCommands {
 		if strings.HasPrefix(n, strings.ToLower(line)) {
@@ -148,5 +154,25 @@ func commandCompleter(line string) (c []string) {
 			c = append(c, n)
 		}
 	}
+	return
+}
+
+func lineCompleter(line string, pos int) (head string, c []string, tail string) {
+	var systemCommands = []string{"\\copyright", "\\?", "\\h"}
+	var sqlStatements = []string{"SELECT"}
+
+	for _, n := range systemCommands {
+		if strings.HasPrefix(n, line[pos:]) {
+			c = append(c, n)
+		}
+	}
+
+	for _, n := range sqlStatements {
+		if strings.HasPrefix(n, strings.ToUpper(line[pos:])) {
+			c = append(c, n)
+		}
+	}
+	head = line[:pos]
+	tail = line[pos:]
 	return
 }
