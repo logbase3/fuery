@@ -28,6 +28,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/logbase3/fuery/fuery/constants"
 	"github.com/peterh/liner"
 	"os"
 	"os/user"
@@ -37,11 +38,11 @@ import (
 
 // Global Variables
 var (
-	PROMPT       string = "> "
-	HOME         string
-	HISTORY_FILE string
-	VERBOSE      bool
-	FILES_LIST   []string
+	prompt      string = "> "
+	home        string
+	historyFile string
+	verbose     bool
+	filesList   []string
 )
 
 // Initialize global variables
@@ -51,8 +52,8 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	HOME = usr.HomeDir
-	HISTORY_FILE = HOME + filepath.FromSlash(HISTORY_FILE_NAME)
+	home = usr.HomeDir
+	historyFile = home + filepath.FromSlash(constants.HistoryFileName)
 }
 
 // Manage flags
@@ -62,36 +63,36 @@ func init() {
 	)
 
 	// Debug options
-	flag.BoolVar(&VERBOSE, "verbose", false, verbUsage)
-	flag.BoolVar(&VERBOSE, "v", false, verbUsage+" (shorthand)")
+	flag.BoolVar(&verbose, "verbose", false, verbUsage)
+	flag.BoolVar(&verbose, "v", false, verbUsage+" (shorthand)")
 }
 
 func main() {
 	flag.Parse()
-	FILES_LIST = flag.Args()
+	filesList = flag.Args()
 
-	fmt.Printf(HEADER)
+	fmt.Printf(constants.Header)
 
 	line := liner.NewLiner()
 	defer line.Close()
 
 	// Set liner options
 	line.SetCompleter(commandCompleter)
-	line.SetWordCompleter(lineCompleter)
+	//line.SetWordCompleter(lineCompleter)
 	line.SetCtrlCAborts(false)
 	line.SetTabCompletionStyle(liner.TabPrints)
 
 	// Load history file
-	if f, err := os.Open(HISTORY_FILE); err == nil {
+	if f, err := os.Open(historyFile); err == nil {
 		line.ReadHistory(f)
 		f.Close()
 	}
 
-	// Prompt loop
+	// prompt loop
 	var input string
 	var err error
 	for {
-		if input, err = line.Prompt(PROMPT); err != nil {
+		if input, err = line.Prompt(prompt); err != nil {
 			fmt.Println("\nError reading line: ", err)
 			break
 		}
@@ -105,9 +106,9 @@ func main() {
 		if input[0] == '\\' { // If input is a system command
 			switch strings.Split(input, " ")[0] {
 			case "\\copyright":
-				fmt.Printf("%s\n\n", LICENSE)
+				fmt.Printf("%s\n\n", constants.License)
 			case "\\?":
-				fmt.Printf("%s\n\n", SYSTEM_HELP)
+				fmt.Printf("%s\n\n", constants.SystemHelp)
 			case "\\h":
 				fmt.Printf("%s\n\n", "SQL STATEMENTS HELP")
 			case "\\q":
@@ -131,8 +132,8 @@ func main() {
 	}
 
 	// Write history to file
-	if f, err := os.Create(HISTORY_FILE); err != nil {
-		fmt.Printf("Error writing history file %s: %s", HISTORY_FILE, err)
+	if f, err := os.Create(historyFile); err != nil {
+		fmt.Printf("Error writing history file %s: %s", historyFile, err)
 	} else {
 		line.WriteHistory(f)
 		f.Close()
@@ -141,17 +142,17 @@ func main() {
 
 func commandCompleter(line string) (c []string) {
 	var systemCommands = []string{"\\copyright", "\\?", "\\h"}
-	var sqlStatements = []string{"select", "SELECT", "ATUN", "CREMAdeELOTE"}
+	var sqlStatements = []string{"SELECT", "ATUN", "CREMAdeELOTE"}
 
 	for _, n := range systemCommands {
 		if strings.HasPrefix(n, strings.ToLower(line)) {
-			c = append(c, n)
+			c = append(c, n+" ")
 		}
 	}
 
 	for _, n := range sqlStatements {
-		if strings.HasPrefix(n, strings.ToLower(line)) {
-			c = append(c, n)
+		if strings.HasPrefix(n, strings.ToUpper(line)) {
+			c = append(c, n+" ")
 		}
 	}
 	return

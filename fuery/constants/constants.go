@@ -19,21 +19,21 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-package main
+package constants
 
 const (
 	// This constant is just the name of the file and should not be used for
 	// opening the file. Instead the HISTORY_FILE variable should be used.
-	HISTORY_FILE_NAME string = "/.fuery_history"
+	HistoryFileName string = "/.fuery_history"
 
 	// Current program version.
-	VERSION string = "0.1"
+	Version string = "0.1"
 
 	// Current year
-	YEAR string = "2015"
+	Year string = "2015"
 
 	// Program header
-	HEADER string = "    Fuery v" + VERSION + " Copyright (C) " + YEAR + " log₃()" + `
+	Header string = "    Fuery v" + Version + " Copyright (C) " + Year + " log₃()" + `
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions. Read the license file or visit:
@@ -46,7 +46,7 @@ const (
 `
 
 	// License text
-	LICENSE string = `    Fuery, is a small and simple tool for querying files using SQL.
+	License string = `    Fuery, is a small and simple tool for querying files using SQL.
     Copyright (C) 2013 log₃() <contact@logbase3.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ const (
     For more information visit https://github.com/logbase3/fuery
     or send an e-mail to contact@logbase3.com`
 
-	SYSTEM_HELP string = `General
+	SystemHelp string = `General
   \copyright      mostrar tÚrminos de uso y distribuci¾n de PostgreSQL
   \g [ARCH] o ;   enviar b·fer de consulta al servidor (y resultados a archivo u |orden)
   \gset [PREFIJO] ejecutar la consulta y almacenar los resultados en variables de psql
