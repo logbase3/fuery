@@ -19,6 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
+// Package constants only exists to clarify when I'm using a constant in the code.
 package constants // import "logbase3.com/fuery/fuery/constants"
 
 const (
