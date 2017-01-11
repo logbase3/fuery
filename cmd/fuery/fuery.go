@@ -35,7 +35,7 @@ import (
 
 	"github.com/peterh/liner"
 
-	"github.com/logbase3/fuery"
+	"logbase3.com/fuery"
 )
 
 // Global Variables

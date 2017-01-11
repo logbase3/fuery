@@ -15,7 +15,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-	For more information visit https://github.com/logbase3/fuery
+	For more information visit https://logbase3.com/fuery
 	or send an e-mail to contact@logbase3.com
 */
 
@@ -51,7 +51,7 @@ type Table struct {
 func NewTable() *Table {
 	table := make([][]string, 0, 3)
 	table = append(table, []string{"5", "6", "8", "9"})
-	table = append(table, []string{"Hola", "Atun", "Caca", "Fresas jajaja jajaja jajaja"})
+	table = append(table, []string{"Hola", "Atun", "Caca", "Ricas fresas"})
 	table = append(table, []string{"Adios", "Con carne", "Para comer", "Con crema rica"})
 
 	types := []DataType{0, 1, 1}

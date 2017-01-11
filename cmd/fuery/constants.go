@@ -15,7 +15,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-	For more information visit https://github.com/logbase3/fuery
+	For more information visit https://logbase3.com/fuery
 	or send an e-mail to contact@logbase3.com
 */
 
@@ -41,13 +41,13 @@ const (
 
     Use '\h' to get help about available options or '\?' to list
     system commands. For more information please visit:
-    http://github.com/logbase3/fuery
+    http://logbase3.com/fuery
 
 `
 
 	// License text
 	LICENSE string = `    Fuery, is a small and simple tool for querying files using SQL.
-    Copyright (C) 2016 log₃() <contact@logbase3.com>
+    Copyright (C)` + YEAR + `log₃() <contact@logbase3.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -62,11 +62,11 @@ const (
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-    For more information visit https://github.com/logbase3/fuery
+    For more information visit https://logbase3.com/fuery
     or send an e-mail to contact@logbase3.com`
 
 	SYSTEM_HELP string = `General
-  \copyright      mostrar tÚrminos de uso y distribuci¾n de PostgreSQL
+  \copyright      mostrar tÚrminos de uso y distribución de PostgreSQL
   \g [ARCH] o ;   enviar b·fer de consulta al servidor (y resultados a archivo u |orden)
   \gset [PREFIJO] ejecutar la consulta y almacenar los resultados en variables de psql
   \h [NOMBRE]     mostrar ayuda de sintaxis de ¾rdenes SQL; use ½*╗ para todas las ¾rdenes
