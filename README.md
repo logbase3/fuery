@@ -1,4 +1,4 @@
-Fuery
+Fuery ![Travis CI](https://travis-ci.org/logbase3/fuery.svg?branch=master)
 =====
 
 Fuery, is a small and simple tool for querying files using SQL.
