@@ -1,0 +1,6 @@
+language: go
+
+go:
+  - tip
+
+#go_import_path: logbase3.com/fuery

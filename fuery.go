@@ -27,20 +27,21 @@ import (
 	"strings"
 )
 
-var (
-	separator       string = " | "
-	headerSeparator string = "-+-"
-	headerCharacter string = "-"
-	generalFormat   string = "%%-%ds"
-	numericFormat   string = "%%%ds"
-	columnTemplate  string = "Column %d"
-)
-
 type DataType int
 
 const (
 	INT int = iota
 	TEXT
+)
+
+// Constants for output configuration
+const (
+	separator       = " | "
+	headerSeparator = "-+-"
+	headerCharacter = "-"
+	generalFormat   = "%%-%ds"
+	numericFormat   = "%%%ds"
+	columnTemplate  = "Column %d"
 )
 
 type Table struct {
