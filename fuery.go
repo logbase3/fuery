@@ -20,7 +20,7 @@
 */
 
 // Package Fuery, is a small and simple library for querying files using SQL.
-package fuery
+package fuery // import "logbase3.com/fuery"
 
 import (
 	"fmt"
