@@ -1,6 +1,9 @@
 language: go
 
+go_import_path: logbase3.com/fuery
+
 go:
   - tip
 
-#go_import_path: logbase3.com/fuery
+install:
+  - go get -t -insecure ./...
