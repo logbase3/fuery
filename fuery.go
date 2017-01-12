@@ -30,18 +30,8 @@ import (
 type DataType int
 
 const (
-	INT int = iota
+	INT DataType = iota
 	TEXT
-)
-
-// Constants for output configuration
-const (
-	separator       = " | "
-	headerSeparator = "-+-"
-	headerCharacter = "-"
-	generalFormat   = "%%-%ds"
-	numericFormat   = "%%%ds"
-	columnTemplate  = "Column %d"
 )
 
 type Table struct {
@@ -60,6 +50,16 @@ func NewTable() *Table {
 	return &Table{table, types}
 }
 
+// Constants for output configuration
+const (
+	separator       = " | "
+	headerSeparator = "-+-"
+	headerCharacter = "-"
+	generalFormat   = "%%-%ds"
+	numericFormat   = "%%%ds"
+	columnTemplate  = "Column %d"
+)
+
 func (t *Table) maxCellLength() (lengths []int) {
 	var length int
 	lengths = make([]int, 0, len(t.table))
@@ -72,15 +72,6 @@ func (t *Table) maxCellLength() (lengths []int) {
 			}
 		}
 		lengths = append(lengths, length)
-	}
-	return
-}
-
-func (t *Table) columnMaxLength(column int) (length int) {
-	for _, elem := range t.table[column] {
-		if len(elem) > length {
-			length = len(elem)
-		}
 	}
 	return
 }
