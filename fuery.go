@@ -27,6 +27,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"unicode/utf8"
 )
 
 type DataType int
@@ -62,20 +63,22 @@ const (
 	columnTemplate  = "Column %d"
 )
 
-func (t *Table) maxCellLength() (lengths []int) {
-	var length int
-	lengths = make([]int, 0, len(t.table))
+func (t *Table) maxCellLength() []int {
+	var length, elemLength int
+
+	lengths := make([]int, 0, len(t.table))
 
 	for column := range t.table {
 		length = len(fmt.Sprintf(columnTemplate, column))
 		for _, elem := range t.table[column] {
-			if len(elem) > length {
-				length = len(elem)
+			elemLength = utf8.RuneCountInString(elem)
+			if elemLength > length {
+				length = elemLength
 			}
 		}
 		lengths = append(lengths, length)
 	}
-	return
+	return lengths
 }
 
 func (t *Table) String() string {
