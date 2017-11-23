@@ -1,10 +1,10 @@
-filequery
+Fuery
 =====
 
 Package filequery is a small and simple library that allows you to query files
 by using built-in functions or plain standard SQL statements.
 
-Online documentation is available on [GoDoc](http://godoc.org/github.com/logbase3/fuery/filequery).
+Online documentation is available on [GoDoc](http://godoc.org/github.com/logbase3/fuery/cmd/fuery).
 
 
     filequery is a small and simple tool for querying files using SQL.

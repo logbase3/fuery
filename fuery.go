@@ -23,7 +23,9 @@
 package fuery // import "logbase3.com/fuery"
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"strings"
 )
 
@@ -45,7 +47,7 @@ func NewTable() *Table {
 	table = append(table, []string{"Hola", "Atun", "Caca", "Ricas fresas"})
 	table = append(table, []string{"Adios", "Con carne", "Para comer", "Con crema rica"})
 
-	types := []DataType{0, 1, 1}
+	types := []DataType{INT, TEXT, TEXT}
 
 	return &Table{table, types}
 }
@@ -77,15 +79,19 @@ func (t *Table) maxCellLength() (lengths []int) {
 }
 
 func (t *Table) String() string {
-	res := make([]string, 0, len(t.table[0]))
+	var buff bytes.Buffer
+	t.Write(&buff)
+	return buff.String()
+}
 
+func (t *Table) Write(buff io.Writer) {
 	// Construct format string with column sizes
 	formatSlice := make([]string, 0, len(t.table))
 	separatorFormatSlice := make([]string, 0, len(t.table))
 	for column, length := range t.maxCellLength() {
-		if t.types[column] == 0 {
+		if t.types[column] == INT {
 			formatSlice = append(formatSlice, fmt.Sprintf(numericFormat, length))
-		} else {
+		} else if t.types[column] == TEXT {
 			formatSlice = append(formatSlice, fmt.Sprintf(generalFormat, length))
 		}
 		separatorFormatSlice = append(separatorFormatSlice, fmt.Sprintf(generalFormat, length))
@@ -104,7 +110,8 @@ func (t *Table) String() string {
 		headerFormatGap = fmt.Sprintf(headerFormatGap, "")
 		row = append(row, headerFormatGap+fmt.Sprintf(columnTemplate, column))
 	}
-	res = append(res, fmt.Sprintf(separatorFormatString, row...))
+	buff.Write([]byte(fmt.Sprintf(separatorFormatString, row...)))
+	buff.Write([]byte("\n"))
 
 	// Build header/body separator
 	var column string
@@ -116,15 +123,16 @@ func (t *Table) String() string {
 		}
 		row = append(row, column)
 	}
-	res = append(res, fmt.Sprintf(headerFormatString, row...))
+	buff.Write([]byte(fmt.Sprintf(headerFormatString, row...)))
+	buff.Write([]byte("\n"))
 
-	// Build row
+	// Build rows
 	for y := 0; y < len(t.table[0]); y++ {
 		row = make([]interface{}, 0, len(t.table))
 		for x := 0; x < len(t.table); x++ {
 			row = append(row, t.table[x][y])
 		}
-		res = append(res, fmt.Sprintf(formatString, row...))
+		buff.Write([]byte(fmt.Sprintf(formatString, row...)))
+		buff.Write([]byte("\n"))
 	}
-	return strings.Join(res, "\n")
 }
