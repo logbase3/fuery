@@ -19,7 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-package main
+package main // import "logbase3.com/fuery/cmd/fuery"
 
 const (
 	// This constant is just the name of the file and should not be used for

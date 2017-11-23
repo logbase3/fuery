@@ -23,7 +23,7 @@
 // You can embed blocks of code in your godoc, such as this:
 //  fmt.Println("Hello")
 // To do that, simply add an extra indent to your comment's text.
-package main
+package main // import "logbase3.com/fuery/cmd/fuery"
 
 import (
 	"flag"
