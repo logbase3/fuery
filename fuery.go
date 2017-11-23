@@ -19,7 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-// Package Fuery, is a small and simple library for querying files using SQL.
+// Package fuery is a small and simple library for querying files using SQL.
 package fuery // import "logbase3.com/fuery"
 
 import (

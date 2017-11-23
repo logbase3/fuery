@@ -19,7 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-// Fuery, is a small and simple tool for querying files using SQL.
+// fuery, is a small and simple tool for querying files using SQL.
 // You can embed blocks of code in your godoc, such as this:
 //  fmt.Println("Hello")
 // To do that, simply add an extra indent to your comment's text.
