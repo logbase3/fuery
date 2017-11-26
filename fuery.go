@@ -24,8 +24,10 @@ package fuery // import "logbase3.com/fuery"
 
 import (
 	"bytes"
+	"container/list"
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 )
@@ -37,20 +39,45 @@ const (
 	TEXT
 )
 
-type Table struct {
-	table [][]string
-	types []DataType
+type Int int64
+
+func (t Int) String() string {
+	return strconv.Itoa(int(t))
 }
 
-func NewTable() *Table {
-	table := make([][]string, 0, 3)
-	table = append(table, []string{"5", "6", "8", "9"})
-	table = append(table, []string{"Hola", "Atun", "Caca", "Ricas fresas"})
-	table = append(table, []string{"Adios", "Con carne", "Para comer", "Con crema rica"})
+type Text string
 
-	types := []DataType{INT, TEXT, TEXT}
+func (t Text) String() string {
+	return string(t)
+}
 
-	return &Table{table, types}
+type Record struct {
+	ParentTable *Table
+	Cells       []fmt.Stringer
+}
+
+type Table struct {
+	Types   []DataType
+	Records *list.List
+}
+
+func (t Table) Insert(values ...fmt.Stringer) {
+	if len(values) > 0 {
+		cells := make([]fmt.Stringer, 0, len(t.Types))
+		cells = append(cells, values...)
+		t.InsertRecords(Record{&t, cells})
+	}
+}
+
+func (t Table) InsertRecords(records ...Record) {
+	for _, record := range records {
+		t.Records.PushBack(record)
+	}
+}
+
+func NewTable(dataTypes ...DataType) *Table {
+	table := &Table{dataTypes, list.New()}
+	return table
 }
 
 // Constants for output configuration
@@ -63,38 +90,38 @@ const (
 	columnTemplate  = "Column %d"
 )
 
-func (t *Table) maxCellLength() []int {
-	var length, elemLength int
-
-	lengths := make([]int, 0, len(t.table))
-
-	for column := range t.table {
-		length = len(fmt.Sprintf(columnTemplate, column))
-		for _, elem := range t.table[column] {
-			elemLength = utf8.RuneCountInString(elem)
-			if elemLength > length {
-				length = elemLength
+func (t Table) maxCellLength() []int {
+	// Bug(Roberto Lapuente): Should use column names instead of numbers where available
+	// Initialize slice with the lenght of the column names
+	lengths := make([]int, 0, len(t.Types))
+	for colNumber := range t.Types {
+		lengths = append(lengths, len(fmt.Sprintf(columnTemplate, colNumber)))
+	}
+	for e := t.Records.Front(); e != nil; e = e.Next() {
+		for i, cell := range e.Value.(Record).Cells {
+			colLength := utf8.RuneCountInString(cell.String())
+			if colLength > lengths[i] {
+				lengths[i] = colLength
 			}
 		}
-		lengths = append(lengths, length)
 	}
 	return lengths
 }
 
-func (t *Table) String() string {
+func (t Table) String() string {
 	var buff bytes.Buffer
 	t.Write(&buff)
 	return buff.String()
 }
 
-func (t *Table) Write(buff io.Writer) {
+func (t Table) Write(buff io.Writer) {
 	// Construct format string with column sizes
-	formatSlice := make([]string, 0, len(t.table))
-	separatorFormatSlice := make([]string, 0, len(t.table))
+	formatSlice := make([]string, 0, len(t.Types))
+	separatorFormatSlice := make([]string, 0, len(t.Types))
 	for column, length := range t.maxCellLength() {
-		if t.types[column] == INT {
+		if t.Types[column] == INT {
 			formatSlice = append(formatSlice, fmt.Sprintf(numericFormat, length))
-		} else if t.types[column] == TEXT {
+		} else if t.Types[column] == TEXT {
 			formatSlice = append(formatSlice, fmt.Sprintf(generalFormat, length))
 		}
 		separatorFormatSlice = append(separatorFormatSlice, fmt.Sprintf(generalFormat, length))
@@ -118,7 +145,7 @@ func (t *Table) Write(buff io.Writer) {
 
 	// Build header/body separator
 	var column string
-	row = make([]interface{}, 0, len(t.table))
+	row = make([]interface{}, 0, len(t.Types))
 	for _, length := range t.maxCellLength() {
 		column = ""
 		for i := 0; i < length; i++ {
@@ -130,12 +157,22 @@ func (t *Table) Write(buff io.Writer) {
 	buff.Write([]byte("\n"))
 
 	// Build rows
-	for y := 0; y < len(t.table[0]); y++ {
-		row = make([]interface{}, 0, len(t.table))
-		for x := 0; x < len(t.table); x++ {
-			row = append(row, t.table[x][y])
+	for e := t.Records.Front(); e != nil; e = e.Next() {
+		row = make([]interface{}, 0, len(t.Types))
+		for _, cell := range e.Value.(Record).Cells {
+			//s := cell.(fmt.Stringer)
+			row = append(row, cell)
 		}
+		//buff.Write([]byte(fmt.Sprintf(formatString, Unpack(record.Cells...))))
 		buff.Write([]byte(fmt.Sprintf(formatString, row...)))
 		buff.Write([]byte("\n"))
 	}
+}
+
+func Unpack(stuff ...fmt.Stringer) []interface{} {
+	var a []interface{}
+	for s := range stuff {
+		a = append(a, s)
+	}
+	return a
 }
