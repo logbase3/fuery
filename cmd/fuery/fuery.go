@@ -21,7 +21,12 @@
 
 // fuery, is a small and simple tool for querying files using SQL.
 // You can embed blocks of code in your godoc, such as this:
-//  fmt.Println("Hello")
+//	table := fuery.NewTable(fuery.INT, fuery.TEXT, fuery.TEXT)
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(12), fuery.Text("Insert"), fuery.Text("Records")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(5), fuery.Text("Hola"), fuery.Text("Adios")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(6), fuery.Text("Atun"), fuery.Text("Con carne")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(8), fuery.Text("Caca"), fuery.Text("Para comer")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(9), fuery.Text("Ricas fresas"), fuery.Text("Con crema rica")}})
 // To do that, simply add an extra indent to your comment's text.
 package main // import "logbase3.com/fuery/cmd/fuery"
 
