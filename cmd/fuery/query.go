@@ -1,5 +1,5 @@
 /*
-	filequery is a small and simple tool for querying files using SQL.
+	fuery is a small and simple tool for querying files using SQL.
 	Copyright (C) 2013 log₃() <contact@logbase3.com>
 
 	This program is free software: you can redistribute it and/or modify

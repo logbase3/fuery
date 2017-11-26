@@ -1,11 +1,12 @@
 Fuery ![Travis CI](https://travis-ci.org/logbase3/fuery.svg?branch=master)
 =====
 
-Fuery, is a small and simple tool for querying files using SQL.
+fuery is a small and simple library that allows you to query files
+by using built-in functions or plain SQL statements.
 
 Online documentation is available on [GoDoc](https://godoc.org/logbase3.com/fuery).
 
-    Fuery, is a small and simple tool for querying files using SQL.
+    fuery, is a small and simple tool for querying files using SQL.
     Copyright (C) 2013 log₃() <contact@logbase3.com>
 
     This program is free software: you can redistribute it and/or modify

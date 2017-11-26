@@ -1,13 +1,12 @@
 Fuery
 =====
 
-Package filequery is a small and simple library that allows you to query files
-by using built-in functions or plain standard SQL statements.
+Command fuery is a small and simple tool for querying text files using SQL.
 
 Online documentation is available on [GoDoc](http://godoc.org/github.com/logbase3/fuery/cmd/fuery).
 
 
-    filequery is a small and simple tool for querying files using SQL.
+    fuery is a small and simple tool for querying files using SQL.
     Copyright (C) 2016 log₃() <contact@logbase3.com>
 
     This program is free software: you can redistribute it and/or modify
