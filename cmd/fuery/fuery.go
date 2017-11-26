@@ -19,8 +19,7 @@
 	or send an e-mail to contact@logbase3.com
 */
 
-// fuery, is a small and simple tool for querying files using SQL.
-// You can embed blocks of code in your godoc, such as this:
+// Command fuery, is a small and simple tool for querying files using SQL.
 //	table := fuery.NewTable(fuery.INT, fuery.TEXT, fuery.TEXT)
 //	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(12), fuery.Text("Insert"), fuery.Text("Records")}})
 //	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(5), fuery.Text("Hola"), fuery.Text("Adios")}})
