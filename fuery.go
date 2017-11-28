@@ -84,7 +84,7 @@ func NewTable(dataTypes ...DataType) *Table {
 const (
 	separator       = " | "
 	headerSeparator = "-+-"
-	headerCharacter = "-"
+	headerCharacter = '-'
 	generalFormat   = "%%-%ds"
 	numericFormat   = "%%%ds"
 	columnTemplate  = "Column %d"
@@ -147,11 +147,11 @@ func (t Table) Write(buff io.Writer) {
 	var column string
 	row = make([]interface{}, 0, len(t.Types))
 	for _, length := range t.maxCellLength() {
-		column = ""
+		column := make([]byte, length)
 		for i := 0; i < length; i++ {
-			column += headerCharacter
+			column[i] += headerCharacter
 		}
-		row = append(row, column)
+		row = append(row, string(column))
 	}
 	buff.Write([]byte(fmt.Sprintf(headerFormatString, row...)))
 	buff.Write([]byte("\n"))
