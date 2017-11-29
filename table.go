@@ -27,43 +27,58 @@ import (
 	"container/list"
 	"fmt"
 	"io"
-	"strconv"
 	"strings"
 	"unicode/utf8"
 )
 
-type DataType int
-
+// Constants for output configuration
 const (
-	INT DataType = iota
-	TEXT
+	separator                 = " | "
+	lineSeparator             = "-+-"
+	lineCharacter             = '-'
+	defaultCellFormat         = "%%-%ds"
+	numericCellFormat         = "%%%ds"
+	defaultColumnNameTemplate = "Column %d"
 )
-
-type Int int64
-
-func (t Int) String() string {
-	return strconv.Itoa(int(t))
-}
-
-type Text string
-
-func (t Text) String() string {
-	return string(t)
-}
 
 type Record struct {
 	ParentTable *Table
-	Cells       []fmt.Stringer
+	Cells       []DataType
 }
 
 type Table struct {
-	Types   []DataType
+	names   []string
+	types   []Type
 	Records *list.List
 }
 
-func (t Table) Insert(values ...fmt.Stringer) {
+func NewTable(dataTypes ...Type) *Table {
+	names := make([]string, len(dataTypes))
+	for i := range dataTypes {
+		names[i] = fmt.Sprintf(defaultColumnNameTemplate, i)
+	}
+	table := &Table{names, dataTypes, list.New()}
+	return table
+}
+
+func (t Table) Names() []string {
+	return t.names
+}
+
+func (t Table) Types() []Type {
+	return t.types
+}
+
+func (t *Table) SetNames(names []string) {
+	if len(names) != len(t.types) {
+		panic(fmt.Sprintf("Invalid name assignment: Names must be a slice with length %d", len(t.types)))
+	}
+	t.names = names
+}
+
+func (t Table) Insert(values ...DataType) {
 	if len(values) > 0 {
-		cells := make([]fmt.Stringer, 0, len(t.Types))
+		cells := make([]DataType, 0, len(t.types))
 		cells = append(cells, values...)
 		t.InsertRecords(Record{&t, cells})
 	}
@@ -75,27 +90,13 @@ func (t Table) InsertRecords(records ...Record) {
 	}
 }
 
-func NewTable(dataTypes ...DataType) *Table {
-	table := &Table{dataTypes, list.New()}
-	return table
-}
-
-// Constants for output configuration
-const (
-	separator       = " | "
-	headerSeparator = "-+-"
-	headerCharacter = '-'
-	generalFormat   = "%%-%ds"
-	numericFormat   = "%%%ds"
-	columnTemplate  = "Column %d"
-)
-
 func (t Table) maxCellLength() []int {
+
 	// Bug(Roberto Lapuente): Should use column names instead of numbers where available
 	// Initialize slice with the lenght of the column names
-	lengths := make([]int, 0, len(t.Types))
-	for colNumber := range t.Types {
-		lengths = append(lengths, len(fmt.Sprintf(columnTemplate, colNumber)))
+	lengths := make([]int, 0, len(t.types))
+	for colNumber := range t.types {
+		lengths = append(lengths, len(t.Names()[colNumber]))
 	}
 	for e := t.Records.Front(); e != nil; e = e.Next() {
 		for i, cell := range e.Value.(Record).Cells {
@@ -116,39 +117,39 @@ func (t Table) String() string {
 
 func (t Table) Write(buff io.Writer) {
 	// Construct format string with column sizes
-	formatSlice := make([]string, 0, len(t.Types))
-	separatorFormatSlice := make([]string, 0, len(t.Types))
-	for column, length := range t.maxCellLength() {
-		if t.Types[column] == INT {
-			formatSlice = append(formatSlice, fmt.Sprintf(numericFormat, length))
-		} else if t.Types[column] == TEXT {
-			formatSlice = append(formatSlice, fmt.Sprintf(generalFormat, length))
+	formatSlice := make([]string, 0, len(t.types))
+	separatorFormatSlice := make([]string, 0, len(t.types))
+	for colName, length := range t.maxCellLength() {
+		if t.types[colName] == INT {
+			formatSlice = append(formatSlice, fmt.Sprintf(numericCellFormat, length))
+		} else if t.types[colName] == TEXT {
+			formatSlice = append(formatSlice, fmt.Sprintf(defaultCellFormat, length))
 		}
-		separatorFormatSlice = append(separatorFormatSlice, fmt.Sprintf(generalFormat, length))
+		separatorFormatSlice = append(separatorFormatSlice, fmt.Sprintf(defaultCellFormat, length))
 	}
 	separatorFormatString := fmt.Sprintf(" %s ", strings.Join(separatorFormatSlice, separator))
-	headerFormatString := fmt.Sprintf("-%s-", strings.Join(formatSlice, headerSeparator))
+	headerFormatString := fmt.Sprintf("-%s-", strings.Join(formatSlice, lineSeparator))
 	formatString := fmt.Sprintf(" %s ", strings.Join(formatSlice, separator))
 
 	// Start appending results
 	var row []interface{}
 
 	// Build header
-	for column, length := range t.maxCellLength() {
-		diff := length - len(fmt.Sprintf(columnTemplate, column))
-		headerFormatGap := fmt.Sprintf(generalFormat, diff/2)
+	for colName, length := range t.maxCellLength() {
+		diff := length - len(t.Names()[colName])
+		headerFormatGap := fmt.Sprintf(defaultCellFormat, diff/2)
 		headerFormatGap = fmt.Sprintf(headerFormatGap, "")
-		row = append(row, headerFormatGap+fmt.Sprintf(columnTemplate, column))
+		row = append(row, fmt.Sprintf("%s%s", headerFormatGap, t.Names()[colName]))
 	}
 	buff.Write([]byte(fmt.Sprintf(separatorFormatString, row...)))
 	buff.Write([]byte("\n"))
 
 	// Build header/body separator
-	row = make([]interface{}, 0, len(t.Types))
+	row = make([]interface{}, 0, len(t.types))
 	for _, length := range t.maxCellLength() {
 		column := make([]byte, length)
 		for i := 0; i < length; i++ {
-			column[i] += headerCharacter
+			column[i] += lineCharacter
 		}
 		row = append(row, string(column))
 	}
@@ -157,21 +158,11 @@ func (t Table) Write(buff io.Writer) {
 
 	// Build rows
 	for e := t.Records.Front(); e != nil; e = e.Next() {
-		row = make([]interface{}, 0, len(t.Types))
+		row = make([]interface{}, 0, len(t.types))
 		for _, cell := range e.Value.(Record).Cells {
-			//s := cell.(fmt.Stringer)
 			row = append(row, cell)
 		}
-		//buff.Write([]byte(fmt.Sprintf(formatString, Unpack(record.Cells...))))
 		buff.Write([]byte(fmt.Sprintf(formatString, row...)))
 		buff.Write([]byte("\n"))
 	}
-}
-
-func Unpack(stuff ...fmt.Stringer) []interface{} {
-	var a []interface{}
-	for s := range stuff {
-		a = append(a, s)
-	}
-	return a
 }

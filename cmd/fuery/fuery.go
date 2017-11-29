@@ -76,11 +76,12 @@ func init() {
 func main() {
 	// Actual package test code
 	table := fuery.NewTable(fuery.INT, fuery.TEXT, fuery.TEXT)
-	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(12), fuery.Text("Insert"), fuery.Text("Records")}})
-	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(5), fuery.Text("Hola"), fuery.Text("Adios")}})
-	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(6), fuery.Text("Atun"), fuery.Text("Con carne")}})
-	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(8), fuery.Text("Caca"), fuery.Text("Para comer")}})
-	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(9), fuery.Text("Ricas fresas"), fuery.Text("Con crema rica")}})
+	table.SetNames([]string{"Id", "Un texto", "Otro texto muy pero muy largo"})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(12), fuery.Text("Insert"), fuery.Text("Records")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(5), fuery.Text("Hola"), fuery.Text("Adios")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(6), fuery.Text("Atun"), fuery.Text("Con carne")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(8), fuery.Text("Caca"), fuery.Text("Para comer")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(9), fuery.Text("Ricas fresas"), fuery.Text("Con crema rica")}})
 
 	flag.Parse()
 	FILES_LIST = flag.Args()
