@@ -21,11 +21,11 @@
 
 // Command fuery, is a small and simple tool for querying files using SQL.
 //	table := fuery.NewTable(fuery.INT, fuery.TEXT, fuery.TEXT)
-//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(12), fuery.Text("Insert"), fuery.Text("Records")}})
-//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(5), fuery.Text("Hola"), fuery.Text("Adios")}})
-//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(6), fuery.Text("Atun"), fuery.Text("Con carne")}})
-//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(8), fuery.Text("Caca"), fuery.Text("Para comer")}})
-//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Int(9), fuery.Text("Ricas fresas"), fuery.Text("Con crema rica")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Numeric(12), fuery.Text("Insert"), fuery.Text("Records")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Numeric(5), fuery.Text("Hola"), fuery.Text("Adios")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Numeric(6), fuery.Text("Atun"), fuery.Text("Con carne")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Numeric(8), fuery.Text("Caca"), fuery.Text("Para comer")}})
+//	table.InsertRecords(fuery.Record{table, []fmt.Stringer{fuery.Numeric(9), fuery.Text("Ricas fresas"), fuery.Text("Con crema rica")}})
 // To do that, simply add an extra indent to your comment's text.
 package main // import "logbase3.com/fuery/cmd/fuery"
 
@@ -77,11 +77,11 @@ func main() {
 	// Actual package test code
 	table := fuery.NewTable(fuery.INT, fuery.TEXT, fuery.TEXT)
 	table.SetNames([]string{"Id", "Un texto", "Otro texto muy pero muy largo"})
-	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(12), fuery.Text("Insert"), fuery.Text("Records")}})
-	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(5), fuery.Text("Hola"), fuery.Text("Adios")}})
-	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(6), fuery.Text("Atun"), fuery.Text("Con carne")}})
-	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(8), fuery.Text("Caca"), fuery.Text("Para comer")}})
-	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Int(9), fuery.Text("Ricas fresas"), fuery.Text("Con crema rica")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Numeric(12), fuery.Text("Insert"), fuery.Text("Records")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Numeric(5.8), fuery.Text("Hola"), fuery.Text("Adios")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Numeric(6), fuery.Text("Atun"), fuery.Text("Con carne")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Numeric(8), fuery.Text("Caca"), fuery.Text("Para comer")}})
+	table.InsertRecords(fuery.Record{table, []fuery.DataType{fuery.Numeric(9), fuery.Text("Ricas fresas"), fuery.Text("Con crema rica")}})
 
 	flag.Parse()
 	FILES_LIST = flag.Args()

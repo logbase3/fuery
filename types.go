@@ -24,6 +24,8 @@ package fuery // import "logbase3.com/fuery"
 
 import "strconv"
 
+// Constants to represent the supported data types. It's just used to specify
+// the column types on table creation.
 type Type int
 
 const (
@@ -31,12 +33,15 @@ const (
 	TEXT
 )
 
-type Int int64
+// Type Numeric is the fuery type used for storing numbers, it can store integers
+// or floating point numbers.
+type Numeric float64
 
-func (t Int) String() string {
-	return strconv.Itoa(int(t))
+func (n Numeric) String() string {
+	return strconv.FormatFloat(float64(n), 'f', -1, 64)
 }
 
+// Type Text is the fuery type for storing text.
 type Text string
 
 func (t Text) String() string {
