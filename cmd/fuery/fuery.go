@@ -137,7 +137,6 @@ func main() {
 		} else { // If input is a statement
 			// Actual package test code
 			fmt.Println(table)
-			fmt.Println()
 		}
 
 		line.AppendHistory(input)

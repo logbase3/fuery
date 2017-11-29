@@ -144,7 +144,6 @@ func (t Table) Write(buff io.Writer) {
 	buff.Write([]byte("\n"))
 
 	// Build header/body separator
-	var column string
 	row = make([]interface{}, 0, len(t.Types))
 	for _, length := range t.maxCellLength() {
 		column := make([]byte, length)
